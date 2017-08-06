@@ -1,9 +1,9 @@
-#include "RAServosController.h"
+#include "RAArm.h"
 
 const int defaultNServos = 6;
 const int defaultServosDigital[defaultNServos] = {3, 5, 6, 9, 10, 11};
 
-RAServosController::RAServosController()
+RAArm::RAArm()
 {
   _nServos = defaultNServos;
   _servos = new RAServo[_nServos];
@@ -15,7 +15,7 @@ RAServosController::RAServosController()
   }
 }
 
-RAServosController::RAServosController(int nServos, int *servosDigital)
+RAArm::RAArm(int nServos, int *servosDigital)
 {
   _nServos = nServos;
   _servos = new RAServo[_nServos];
@@ -27,13 +27,13 @@ RAServosController::RAServosController(int nServos, int *servosDigital)
   }
 }
 
-RAServosController::~RAServosController()
+RAArm::~RAArm()
 {
   delete []_servos;
   delete []_servosDigital;
 }
 
-const RAServo& RAServosController::operator [] (int index)
+const RAServo& RAArm::operator [] (int index)
 {
   return _servos[index];
 }

@@ -1,16 +1,16 @@
 #pragma once
 #include "RAServo.h"
 
-class RAServosController
+class RAArm
 {
 private:
   int _nServos;
   RAServo *_servos;
   int *_servosDigital;
 public:
-  RAServosController();
-  RAServosController(int nServos, int *servosDigital);
-  ~RAServosController();
+  RAArm();
+  RAArm(int nServos, int *servosDigital);
+  ~RAArm();
   const RAServo& operator [] (int index);
 };
 
