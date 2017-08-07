@@ -11,7 +11,6 @@ RAArm::RAArm()
   for (int i = 0; i < _nServos; ++i)
   {
     _servosDigital[i] = defaultServosDigital[i];
-    _servos[i].attach(_servosDigital[i]);
   }
 }
 
@@ -23,7 +22,6 @@ RAArm::RAArm(int nServos, int *servosDigital)
   for (int i = 0; i < _nServos; ++i)
   {
     _servosDigital[i] = servosDigital[i];
-    _servos[i].attach(_servosDigital[i]);
   }
 }
 
@@ -33,8 +31,29 @@ RAArm::~RAArm()
   delete []_servosDigital;
 }
 
+uint8_t RAArm::attach()
+{
+  for (int i = 0; i < _nServos; ++i)
+  {
+    _servos[i].attach(_servosDigital[i]);
+  }  
+}
+
+void RAArm::detach()
+{
+  for (int i = 0; i < _nServos; ++i)
+  {
+    _servos[i].detach();
+  }    
+}
+
 const RAServo& RAArm::operator [] (int index)
 {
   return _servos[index];
+}
+
+void RAArm::calculatePositionMove()
+{
+  
 }
 

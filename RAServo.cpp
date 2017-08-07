@@ -2,27 +2,26 @@
 
 const int defaultDelay = 20;
 const double defaultElements[3] = {0.0, 0.0, 0.0};
-const RAPoint<double, 3> defaultPosition(defaultElements);
 
 RAServo::RAServo()
 {
   _delay = defaultDelay;
-  _position = defaultPosition;    
+  _position = defaultElements;    
 }
 
 RAServo::RAServo(int delay)
 {
   _delay = delay;
-  _position = defaultPosition;  
+  _position = defaultElements;    
 }
 
-RAServo::RAServo(const RAPoint<double, 3> &position)
+RAServo::RAServo(const RACoordinate<double, 3> &position)
 {
   _delay = defaultDelay;
   _position = position;  
 }
 
-RAServo::RAServo(int delay, const RAPoint<double, 3> &position)
+RAServo::RAServo(int delay, const RACoordinate<double, 3> &position)
 {
   _delay = delay;
   _position = position;  
@@ -75,13 +74,12 @@ int RAServo::getDelay()
  return _delay; 
 }
 
-void RAServo::setPosition(const RAPoint<double, 3> &p)
+void RAServo::setPosition(const RACoordinate<double, 3> &position)
 {
-  _position = p;
+  _position = position;
 }
 
-const RAPoint<double, 3> RAServo::getPosition()
+const RACoordinate<double, 3> RAServo::getPosition()
 {
   return _position;
 }
-

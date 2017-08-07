@@ -1,20 +1,20 @@
 #pragma once
 #include <Servo.h>
 #include <Arduino.h>
-#include "RAPoint.h"
+#include "RACoordinate.h"
 
 class RAServo
 {
 private:
   Servo _servo;
-  RAPoint<double, 3> _position;
+  RACoordinate<double, 3> _position;
   int _delay;
 
 public:
   RAServo();
   RAServo(int delay);
-  RAServo(const RAPoint<double, 3> &position);
-  RAServo(int delay, const RAPoint<double, 3> &position);
+  RAServo(const RACoordinate<double, 3> &position);
+  RAServo(int delay, const RACoordinate<double, 3> &position);
   ~RAServo();
   uint8_t attach(int pin);
   void detach();
@@ -23,6 +23,6 @@ public:
   bool attached();
   void setDelay(int d);
   int getDelay();
-  void setPosition(const RAPoint<double, 3> &p);
-  const RAPoint<double, 3> getPosition();  
+  void setPosition(const RACoordinate<double, 3> &position);
+  const RACoordinate<double, 3> getPosition();
 };
