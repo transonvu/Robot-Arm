@@ -11,24 +11,24 @@ private:
 public:
   RACoordinate();
   RACoordinate(int nDimensions);
-  RACoordinate(RAArray<T> &elements);
-  RACoordinate(RACoordinate<T> &coordinate);
+  RACoordinate(const RAArray<T> &elements);
+  RACoordinate(const RACoordinate<T> &coordinate);
   ~RACoordinate();
-  RACoordinate& operator = (RAArray<T> &elements);
-  RACoordinate& operator = (RACoordinate<T> &coordinate);
-  RACoordinate operator + (RACoordinate<T> &coordinate);
-  RACoordinate operator - (RACoordinate<T> &coordinate);
+  RACoordinate& operator = (const RAArray<T> &elements);
+  RACoordinate& operator = (const RACoordinate<T> &coordinate);
+  RACoordinate operator + (const RACoordinate<T> &coordinate);
+  RACoordinate operator - (const RACoordinate<T> &coordinate);
   RACoordinate operator * (double factor);
   RACoordinate operator / (double divisor);
-  RACoordinate& operator += (RACoordinate<T> &coordinate);
-  RACoordinate& operator -= (RACoordinate<T> &coordinate);
+  RACoordinate& operator += (const RACoordinate<T> &coordinate);
+  RACoordinate& operator -= (const RACoordinate<T> &coordinate);
   RACoordinate& operator *= (double factor);
   RACoordinate& operator /= (double divisor);
 
   T& operator [] (int index);
 
   void resize(int nDimensions);
-  int size();
+  int size() const;
 };
 
 template<class T>
@@ -44,13 +44,13 @@ RACoordinate<T>::RACoordinate(int nDimensions)
 }
 
 template<class T>
-RACoordinate<T>::RACoordinate(RAArray<T> &elements)
+RACoordinate<T>::RACoordinate(const RAArray<T> &elements)
 {
   _elements = elements;
 }
 
 template<class T>
-RACoordinate<T>::RACoordinate(RACoordinate<T> &coordinate)
+RACoordinate<T>::RACoordinate(const RACoordinate<T> &coordinate)
 {
   _elements = coordinate._elements;
 }
@@ -62,27 +62,23 @@ RACoordinate<T>::~RACoordinate()
 }
 
 template<class T>
-RACoordinate<T>& RACoordinate<T>::operator = (RAArray<T> &elements)
+RACoordinate<T>& RACoordinate<T>::operator = (const RAArray<T> &elements)
 {
   _elements = elements;
   return *this;  
 }
 
 template<class T>
-RACoordinate<T>& RACoordinate<T>::operator = (RACoordinate<T> &coordinate)
+RACoordinate<T>& RACoordinate<T>::operator = (const RACoordinate<T> &coordinate)
 {
   _elements = coordinate._elements;
   return *this;
 }
 
 template<class T>
-RACoordinate<T> RACoordinate<T>::operator + (RACoordinate<T> &coordinate)
+RACoordinate<T> RACoordinate<T>::operator + (const RACoordinate<T> &coordinate)
 {
   int nDimensions = size();
-  if (nDimensions != coordinate.size())
-  {
-    throw 0;
-  }
   RACoordinate<T> t(nDimensions);
   for (int i = 0; i < nDimensions; ++i)
   {
@@ -92,13 +88,9 @@ RACoordinate<T> RACoordinate<T>::operator + (RACoordinate<T> &coordinate)
 }
 
 template<class T>
-RACoordinate<T> RACoordinate<T>::operator - (RACoordinate<T> &coordinate)
+RACoordinate<T> RACoordinate<T>::operator - (const RACoordinate<T> &coordinate)
 {
   int nDimensions = size();
-  if (nDimensions != coordinate.size())
-  {
-    throw 0;
-  }
   RACoordinate<T> t(nDimensions);
   for (int i = 0; i < nDimensions; ++i)
   {
@@ -132,12 +124,12 @@ RACoordinate<T> RACoordinate<T>::operator / (double divisor)
 }
 
 template<class T>
-RACoordinate<T>& RACoordinate<T>::operator += (RACoordinate<T> &coordinate)
+RACoordinate<T>& RACoordinate<T>::operator += (const RACoordinate<T> &coordinate)
 {
   int nDimensions = size();
   if (nDimensions != coordinate.size())
   {
-    throw 0;
+    return 0;
   }
   for (int i = 0; i < nDimensions; ++i)
   {
@@ -147,12 +139,12 @@ RACoordinate<T>& RACoordinate<T>::operator += (RACoordinate<T> &coordinate)
 }
 
 template<class T>
-RACoordinate<T>& RACoordinate<T>::operator -= (RACoordinate<T> &coordinate)
+RACoordinate<T>& RACoordinate<T>::operator -= (const RACoordinate<T> &coordinate)
 {
   int nDimensions = size();
   if (nDimensions != coordinate.size())
   {
-    throw 0;
+    return 0;
   }
   for (int i = 0; i < nDimensions; ++i)
   {
@@ -196,7 +188,7 @@ void RACoordinate<T>::resize(int nDimensions)
 }
 
 template<class T>
-int RACoordinate<T>::size()
+int RACoordinate<T>::size() const
 {
   return _elements.size();
 }

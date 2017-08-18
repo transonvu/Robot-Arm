@@ -11,9 +11,9 @@ private:
 public:
   RAArray();
   RAArray(int size);
-  RAArray(RAArray<T> &array);
+  RAArray(const RAArray<T> &array);
   ~RAArray();
-  RAArray<T>& operator = (RAArray<T> &array);
+  RAArray<T>& operator = (const RAArray<T> &array);
   T& operator [] (int index);
 
   void resize(int size);
@@ -36,7 +36,7 @@ RAArray<T>::RAArray(int size)
 }
 
 template<class T>
-RAArray<T>::RAArray(RAArray<T> &array)
+RAArray<T>::RAArray(const RAArray<T> &array)
 {
   _size = array._size;
   for (int i = 0; i < _size; ++i)
@@ -53,7 +53,7 @@ RAArray<T>::~RAArray()
 }
 
 template<class T>
-RAArray<T>& RAArray<T>::operator = (RAArray<T> &array)
+RAArray<T>& RAArray<T>::operator = (const RAArray<T> &array)
 {
   if (_size != array._size)
   {

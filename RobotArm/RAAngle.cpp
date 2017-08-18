@@ -27,7 +27,7 @@ RAAngle& RAAngle::operator = (double angle)
   return (*this);
 }
 
-RAAngle& RAAngle::operator = (RAAngle &angle)
+RAAngle& RAAngle::operator = (const RAAngle &angle)
 {
   _angle = angle._angle;
   return (*this);
@@ -47,14 +47,14 @@ RAAngle RAAngle::operator - (double angle)
   return t;  
 }
 
-RAAngle RAAngle::operator + (RAAngle &angle)
+RAAngle RAAngle::operator + (const RAAngle &angle)
 {
   RAAngle t;
   t._angle = _angle + angle._angle;
   return t;
 }
 
-RAAngle RAAngle::operator - (RAAngle &angle)
+RAAngle RAAngle::operator - (const RAAngle &angle)
 {
   RAAngle t;
   t._angle = _angle - angle._angle;
@@ -87,13 +87,13 @@ RAAngle& RAAngle::operator -= (double angle)
   return (*this);    
 }
 
-RAAngle& RAAngle::operator += (RAAngle &angle)
+RAAngle& RAAngle::operator += (const RAAngle &angle)
 {
   _angle += angle._angle;
   return (*this);    
 }
 
-RAAngle& RAAngle::operator -= (RAAngle &angle)
+RAAngle& RAAngle::operator -= (const RAAngle &angle)
 {
   _angle -= angle._angle;
   return (*this);   

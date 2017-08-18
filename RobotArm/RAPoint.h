@@ -11,16 +11,16 @@ private:
 public:
   RAPoint();
   RAPoint(int nDimensions);
-  RAPoint(RAArray<T> &elements);
-  RAPoint(RACoordinate<T> &coordinate);
-  RAPoint(RAPoint<T> &point);
+  RAPoint(const RAArray<T> &elements);
+  RAPoint(const RACoordinate<T> &coordinate);
+  RAPoint(const RAPoint<T> &point);
   ~RAPoint();
-  RAPoint& operator = (RAArray<T> &elements);
-  RAPoint& operator = (RACoordinate<T> &coordinate);
-  RAPoint& operator = (RAPoint<T> &point);
+  RAPoint& operator = (const RAArray<T> &elements);
+  RAPoint& operator = (const RACoordinate<T> &coordinate);
+  RAPoint& operator = (const RAPoint<T> &point);
   T& operator [] (int index);
 
-  T distance(RAPoint<T> &point);
+  T distance(const RAPoint<T> &point);
   void resize(int nDimensions);
   int size();
 };
@@ -38,19 +38,19 @@ RAPoint<T>::RAPoint(int nDimensions)
 }
 
 template<class T>
-RAPoint<T>::RAPoint(RAArray<T> &elements)
+RAPoint<T>::RAPoint(const RAArray<T> &elements)
 {
   _coordinate = elements;
 }
 
 template<class T>
-RAPoint<T>::RAPoint(RACoordinate<T> &coordinate)
+RAPoint<T>::RAPoint(const RACoordinate<T> &coordinate)
 {
   _coordinate = coordinate;
 }
 
 template<class T>
-RAPoint<T>::RAPoint(RAPoint<T> &point)
+RAPoint<T>::RAPoint(const RAPoint<T> &point)
 {
   _coordinate = point._coordinate;
 }
@@ -62,20 +62,20 @@ RAPoint<T>::~RAPoint()
 }
 
 template<class T>
-RAPoint<T>& RAPoint<T>::operator = (RAArray<T> &elements)
+RAPoint<T>& RAPoint<T>::operator = (const RAArray<T> &elements)
 {
   _coordinate = elements;
   return *this;  
 }
 
 template<class T>
-RAPoint<T>& RAPoint<T>::operator = (RACoordinate<T> &coordinate)
+RAPoint<T>& RAPoint<T>::operator = (const RACoordinate<T> &coordinate)
 {
     _coordinate = coordinate;
 }
 
 template<class T>
-RAPoint<T>& RAPoint<T>::operator = (RAPoint<T> &point)
+RAPoint<T>& RAPoint<T>::operator = (const RAPoint<T> &point)
 {
   _coordinate = point._coordinate;
   return *this;
@@ -88,13 +88,9 @@ T& RAPoint<T>::operator [] (int index)
 }
 
 template<class T>
-T RAPoint<T>::distance(RAPoint<T> &point)
+T RAPoint<T>::distance(const RAPoint<T> &point)
 {
   int nDimensions = size();
-  if (nDimensions != point.size())
-  {
-    throw 0; 
-  }
   T t = 0;
   for (int i = 0; i < nDimensions; ++i)
   {

@@ -15,17 +15,17 @@ public:
   RAAngle(double angle, uint8_t type);
   RAAngle(uint8_t type);
   RAAngle& operator = (double angle);
-  RAAngle& operator = (RAAngle &angle);
+  RAAngle& operator = (const RAAngle &angle);
   RAAngle operator + (double angle);
   RAAngle operator - (double angle);
-  RAAngle operator + (RAAngle &angle);
-  RAAngle operator - (RAAngle &angle);
+  RAAngle operator + (const RAAngle &angle);
+  RAAngle operator - (const RAAngle &angle);
   RAAngle operator * (double factor);
   RAAngle operator / (double divisor);
   RAAngle& operator += (double angle);
   RAAngle& operator -= (double angle);
-  RAAngle& operator += (RAAngle &angle);
-  RAAngle& operator -= (RAAngle &angle);
+  RAAngle& operator += (const RAAngle &angle);
+  RAAngle& operator -= (const RAAngle &angle);
   RAAngle& operator *= (double factor);
   RAAngle& operator /= (double divisor);
   

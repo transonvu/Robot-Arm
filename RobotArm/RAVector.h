@@ -12,40 +12,36 @@ private:
 public:
   RAVector();
   RAVector(int nDimensions);
-  RAVector(RAArray<T> &elements);
-  RAVector(RACoordinate<T> &coordinate);
-  RAVector(RAVector<T> &point);
-  RAVector(RAPoint<T> &start, RAPoint<T> &end);
+  RAVector(const RAArray<T> &elements);
+  RAVector(const RACoordinate<T> &coordinate);
+  RAVector(const const RAVector<T> &vector);
+  RAVector(const RAPoint<T> &start, const RAPoint<T> &end);
   ~RAVector();
-  RAVector& operator = (RAArray<T> &elements);
-  RAVector& operator = (RACoordinate<T> &coordinate);
-  RAVector& operator = (RAVector<T> &vector);
-  RAVector operator + (RAVector<T> &vector);
-  RAVector operator - (RAVector<T> &vector);
+  RAVector& operator = (const RAArray<T> &elements);
+  RAVector& operator = (const RACoordinate<T> &coordinate);
+  RAVector& operator = (const RAVector<T> &vector);
+  RAVector operator + (const RAVector<T> &vector);
+  RAVector operator - (const RAVector<T> &vector);
   RAVector operator * (T factor);
-  T operator * (RAVector<T> &vector);
+  T operator * (const RAVector<T> &vector);
   RAVector operator / (T divisor);
-  RAVector& operator += (RAVector<T> &vector);
-  RAVector& operator -= (RAVector<T> &vector);
+  RAVector& operator += (const RAVector<T> &vector);
+  RAVector& operator -= (const RAVector<T> &vector);
   RAVector& operator *= (T factor);
   RAVector& operator /= (T divisor);
   T& operator [] (int index);
 
   T length();
-  RAAngle angle(RAVector<T> &vector);
+  RAAngle angle(const RAVector<T> &vector);
 
   void resize(int nDimensions);
-  int size();
+  int size() const;
 };
 
 template<class T>
-RAVector<T> operator - (RAPoint<T> &start, RAPoint<T> &end)
+RAVector<T> operator - (const RAPoint<T> &start, const RAPoint<T> &end)
 {
   int nDimension = start.size();
-  if (nDimension != end.size())
-  {
-    throw 0;
-  }
   RAVector<T> t(nDimension);
   for (int i = 0; i < nDimensions; ++i)
   {
@@ -68,31 +64,27 @@ RAVector<T>::RAVector(int nDimensions)
 }
 
 template<class T>
-RAVector<T>::RAVector(RAArray<T> &elements)
+RAVector<T>::RAVector(const RAArray<T> &elements)
 {
   _coordinate = elements;
 }
 
 template<class T>
-RAVector<T>::RAVector(RACoordinate<T> &coordinate)
+RAVector<T>::RAVector(const RACoordinate<T> &coordinate)
 {
   _coordinate = coordinate;
 }
 
 template<class T>
-RAVector<T>::RAVector(RAVector<T> &vector)
+RAVector<T>::RAVector(const RAVector<T> &vector)
 {
   _coordinate = vector._coordinate;
 }
 
 template<class T>
-RAVector<T>::RAVector(RAPoint<T> &start, RAPoint<T> &end)
+RAVector<T>::RAVector(const RAPoint<T> &start, const RAPoint<T> &end)
 {
   int nDimension = start.size();
-  if (nDimension != end.size())
-  {
-    throw 0;
-  }
   resize(nDimension);
   for (int i = 0; i < nDimensions; ++i)
   {
@@ -107,46 +99,38 @@ RAVector<T>::~RAVector()
 }
 
 template<class T>
-RAVector<T>& RAVector<T>::operator = (RAArray<T> &elements)
+RAVector<T>& RAVector<T>::operator = (const RAArray<T> &elements)
 {
   _coordinate = elements;
   return *this;  
 }
 
 template<class T>
-RAVector<T>& RAVector<T>::operator = (RACoordinate<T> &coordinate)
+RAVector<T>& RAVector<T>::operator = (const RACoordinate<T> &coordinate)
 {
     _coordinate = coordinate;
 }
 
 template<class T>
-RAVector<T>& RAVector<T>::operator = (RAVector<T> &vector)
+RAVector<T>& RAVector<T>::operator = (const RAVector<T> &vector)
 {
   _coordinate = vector._coordinate;
   return *this;
 }
 
 template<class T>
-RAVector<T> RAVector<T>::operator + (RAVector<T> &vector)
+RAVector<T> RAVector<T>::operator + (const RAVector<T> &vector)
 {
   int nDimension = size();
-  if (nDimension != vector.size())
-  {
-    throw 0;
-  }
   RAVector<T> t(nDimension);
   t._coordinate = _coordinate + vector._coordinate;
   return t;
 }
 
 template<class T>
-RAVector<T> RAVector<T>::operator - (RAVector<T> &vector)
+RAVector<T> RAVector<T>::operator - (const RAVector<T> &vector)
 {
   int nDimension = size();
-  if (nDimension != vector.size())
-  {
-    throw 0;
-  }
   RAVector<T> t(nDimension);
   t._coordinate = _coordinate - vector._coordinate;
   return t;
@@ -161,13 +145,9 @@ RAVector<T> RAVector<T>::operator * (T factor)
 }
 
 template<class T>
-T RAVector<T>::operator * (RAVector<T> &vector)
+T RAVector<T>::operator * (const RAVector<T> &vector)
 {
   int nDimension = size();
-  if (nDimension != vector.size())
-  {
-    throw 0;
-  }
   T t = 0;
   for (int i = 0; i < nDimensions; ++i)
   {
@@ -185,23 +165,15 @@ RAVector<T> RAVector<T>::operator / (T divisor)
 }
 
 template<class T>
-RAVector<T>& RAVector<T>::operator += (RAVector<T> &vector)
+RAVector<T>& RAVector<T>::operator += (const RAVector<T> &vector)
 {
-  if (size() != vector.size())
-  {
-    throw 0;
-  }
   _coordinate += vector._coordinate;
   return (*this);
 }
 
 template<class T>
-RAVector<T>& RAVector<T>::operator -= (RAVector<T> &vector)
+RAVector<T>& RAVector<T>::operator -= (const RAVector<T> &vector)
 {
-  if (size() != vector.size())
-  {
-    throw 0;
-  }
   _coordinate -= vector._coordinate;
   return (*this);
 }
@@ -238,12 +210,8 @@ T RAVector<T>::length()
 }
 
 template<class T>
-RAAngle RAVector<T>::angle(RAVector<T> &vector)
+RAAngle RAVector<T>::angle(const RAVector<T> &vector)
 {
-  if (size() != vector.size())
-  {
-    throw 0;
-  }
   return RAAngle(acos(((*this) * vector) / (length() * vector.length())), RAAngle::RADIAN);  
 }
 
@@ -254,7 +222,7 @@ void RAVector<T>::resize(int nDimensions)
 }
 
 template<class T>
-int RAVector<T>::size()
+int RAVector<T>::size() const
 {
   return _coordinate.size();  
 }

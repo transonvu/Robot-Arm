@@ -3,13 +3,12 @@
 
 #include <Arduino.h>
 #include "RAMatrix.h"
+#include "RAAngle.h"
 
 class RADenavitHartenberg
 {
-private:
 public:
-  RADenavitHartenberg();
-  ~RADenavitHartenberg();
+  static RAMatrix<double> calculateDH(const RAAngle &theta, double d, double a, const RAAngle &alpha);
 };
 
 #endif // RADENAVITHARTENBERG_H

@@ -5,21 +5,20 @@
 #include "RAVector.h"
 #include "RAPoint.h"
 #include "RAAngle.h"
+#include "RAMatrix.h"
+#include "RADenavitHartenberg.h"
 
-/*
 class RAServos
 {
 private:
   RAServo *_servos;
   int *_servosDigital;
   int _nServos;
-  RAPoint<double, 3> _start;
+  RAPoint<double> _start;
 
-  bool isNearest(RAPoint<float, 3> &end, RAPoint<float, 3> &object);
-  RAPoint<double, 3>* calculatePositionVertical(RAPoint<float, 3> &start, int iStart, int iEnd);
-  RAPoint<double, 3>* calculatePositionHorizontal(RAPoint<float, 3> &start, int iStart, int iEnd);
-  RAPoint<double, 3>* calculatePositionHand(RAPoint<float, 3> &start, int iStart, int iEnd);
-  RAAngle *CCD();
+  bool isNearest(const RAPoint<double> &end, const RAPoint<double> &object);
+  RAArray<RAPoint<double>> calculatePosition();
+  RAArray<RAAngle> CCD(const RAPoint<double> &object);
   
 public:
   RAServos();
@@ -28,7 +27,7 @@ public:
   uint8_t attach();
   void detach();
   RAServo& operator [] (int index);
-  void move(RAPoint<double, 3> &point);
+  void move(const RAPoint<double> &object);
 };
-*/
+
 #endif // RASERVOS_H

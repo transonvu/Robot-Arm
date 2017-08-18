@@ -11,30 +11,30 @@ private:
 public:
   RAMatrix();
   RAMatrix(int rows, int cols);
-  RAMatrix(RAArray<RAArray<T>> &elements);
-  RAMatrix(RAMatrix<T> &elements);
+  RAMatrix(const RAArray<RAArray<T>> &elements);
+  RAMatrix(const RAMatrix<T> &matrix);
   ~RAMatrix();
 
-  RAMatrix operator + (RAMatrix<T> &matrix);
-  RAMatrix operator - (RAMatrix<T> &matrix);
+  RAMatrix operator + (const RAMatrix<T> &matrix);
+  RAMatrix operator - (const RAMatrix<T> &matrix);
   RAMatrix operator * (double factor);
-  RAMatrix operator * (RAMatrix<T> &matrix);
+  RAMatrix operator * (const RAMatrix<T> &matrix);
   RAMatrix operator / (double divisor);
 
-  RAMatrix& operator += (RAMatrix<T> &matrix);
-  RAMatrix& operator -= (RAMatrix<T> &matrix);
+  RAMatrix& operator += (const RAMatrix<T> &matrix);
+  RAMatrix& operator -= (const RAMatrix<T> &matrix);
   RAMatrix& operator *= (double factor);
   RAMatrix& operator /= (double divisor);
 
-  RAMatrix& operator = (RAArray<RAArray<T>> &elements);
-  RAMatrix& operator = (RAMatrix<T> &matrix);
+  RAMatrix& operator = (const RAArray<RAArray<T>> &elements);
+  RAMatrix& operator = (const RAMatrix<T> &matrix);
 
   RAMatrix transpose();
   RAArray<T>& operator [] (int index);
 
   void resize(int rows, int cols);
-  int rows();
-  int cols();
+  int rows() const;
+  int cols() const;
 };
 
 template<class T>
@@ -58,13 +58,13 @@ RAMatrix<T>::RAMatrix(int rows, int cols)
 }
 
 template<class T>
-RAMatrix<T>::RAMatrix(RAArray<RAArray<T>> &elements)
+RAMatrix<T>::RAMatrix(const RAArray<RAArray<T>> &elements)
 {
   _elements = elements;  
 }
 
 template<class T>
-RAMatrix<T>::RAMatrix(RAMatrix<T> &matrix)
+RAMatrix<T>::RAMatrix(const RAMatrix<T> &matrix)
 {
   _elements = matrix._elements;    
 }
@@ -76,14 +76,10 @@ RAMatrix<T>::~RAMatrix()
 }
 
 template<class T>
-RAMatrix<T> RAMatrix<T>::operator + (RAMatrix<T> &matrix)
+RAMatrix<T> RAMatrix<T>::operator + (const RAMatrix<T> &matrix)
 {
   int nRows = rows();
   int nCols = cols();
-  if (!(nRows == matrix.rows() && nCols == matrix.cols()))
-  {
-    throw 0;
-  }
   RAMatrix<T> t(nRows, nCols);
   for (int i = 0; i < nRows; ++i)
   {
@@ -96,14 +92,10 @@ RAMatrix<T> RAMatrix<T>::operator + (RAMatrix<T> &matrix)
 }
 
 template<class T>
-RAMatrix<T> RAMatrix<T>::operator - (RAMatrix<T> &matrix)
+RAMatrix<T> RAMatrix<T>::operator - (const RAMatrix<T> &matrix)
 {
   int nRows = rows();
   int nCols = cols();
-  if (!(nRows == matrix.rows() && nCols == matrix.cols()))
-  {
-    throw 0;
-  }
   RAMatrix<T> t(nRows, nCols);
   for (int i = 0; i < nRows; ++i)
   {
@@ -132,14 +124,10 @@ RAMatrix<T> RAMatrix<T>::operator * (double factor)
 }
 
 template<class T>
-RAMatrix<T> RAMatrix<T>::operator * (RAMatrix &matrix)
+RAMatrix<T> RAMatrix<T>::operator * (const RAMatrix<T> &matrix)
 {
   int nRows = rows();
   int nCols1 = cols();
-  if (nCols1 != matrix.rows())
-  {
-    throw 0;
-  }
   int nCols2 = matrix.cols();
   
   RAMatrix<T> t(nRows, nCols2);
@@ -173,14 +161,10 @@ RAMatrix<T> RAMatrix<T>::operator / (double divisor)
 }
 
 template<class T>
-RAMatrix<T>& RAMatrix<T>::operator += (RAMatrix<T> &matrix)
+RAMatrix<T>& RAMatrix<T>::operator += (const RAMatrix<T> &matrix)
 {
   int nRows = rows();
   int nCols = cols();
-  if (!(nRows == matrix.rows() && nCols == matrix.cols()))
-  {
-    throw 0;
-  }
   for (int i = 0; i < nRows; ++i)
   {
     for (int j = 0; j < nCols; ++j)
@@ -192,14 +176,10 @@ RAMatrix<T>& RAMatrix<T>::operator += (RAMatrix<T> &matrix)
 }
 
 template<class T>
-RAMatrix<T>& RAMatrix<T>::operator -= (RAMatrix<T> &matrix)
+RAMatrix<T>& RAMatrix<T>::operator -= (const RAMatrix<T> &matrix)
 {
   int nRows = rows();
   int nCols = cols();
-  if (!(nRows == matrix.rows() && nCols == matrix.cols()))
-  {
-    throw 0;
-  }
   for (int i = 0; i < rows; ++i)
   {
     for (int j = 0; j < cols; ++j)
@@ -241,14 +221,14 @@ RAMatrix<T>& RAMatrix<T>::operator /= (double divisor)
 }
 
 template<class T>
-RAMatrix<T>& RAMatrix<T>::operator = (RAArray<RAArray<T>> &elements)
+RAMatrix<T>& RAMatrix<T>::operator = (const RAArray<RAArray<T>> &elements)
 {
   _elements = elements;
   return (*this);
 }
 
 template<class T>
-RAMatrix<T>& RAMatrix<T>::operator = (RAMatrix<T> &matrix)
+RAMatrix<T>& RAMatrix<T>::operator = (const RAMatrix<T> &matrix)
 {
   _elements = matrix._elements;
   return (*this);
@@ -287,13 +267,13 @@ void RAMatrix<T>::resize(int rows, int cols)
 }
 
 template<class T>
-int RAMatrix<T>::rows()
+int RAMatrix<T>::rows() const
 {
   return _elements.size();
 }
 
 template<class T>
-int RAMatrix<T>::cols()
+int RAMatrix<T>::cols() const
 {
   if (rows() == 0)
   {
