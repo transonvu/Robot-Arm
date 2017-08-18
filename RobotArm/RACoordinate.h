@@ -1,122 +1,204 @@
-#pragma once
+#ifndef RACOORDINATE_H
+#define RACOORDINATE_H
 
-template<class T, int nDimensions>
+#include "RAArray.h"
+
+template<class T>
 class RACoordinate
 {
 private:
-  T _elements[nDimensions];
+  RAArray<T> _elements;
 public:
   RACoordinate();
-  RACoordinate(const T *elements);
-  RACoordinate(const RACoordinate<T, nDimensions> &p);
+  RACoordinate(int nDimensions);
+  RACoordinate(RAArray<T> &elements);
+  RACoordinate(RACoordinate<T> &coordinate);
   ~RACoordinate();
-  const RACoordinate operator + (const RACoordinate<T, nDimensions> &p);
-  const RACoordinate operator - (const RACoordinate<T, nDimensions> &p);
-  const RACoordinate& operator += (const RACoordinate<T, nDimensions> &p);
-  const RACoordinate& operator -= (const RACoordinate<T, nDimensions> &p);
-  const RACoordinate& operator = (const RACoordinate<T, nDimensions> &p);
-  const RACoordinate& operator = (const T *elements);
-  const T& operator [] (int index);
+  RACoordinate& operator = (RAArray<T> &elements);
+  RACoordinate& operator = (RACoordinate<T> &coordinate);
+  RACoordinate operator + (RACoordinate<T> &coordinate);
+  RACoordinate operator - (RACoordinate<T> &coordinate);
+  RACoordinate operator * (double factor);
+  RACoordinate operator / (double divisor);
+  RACoordinate& operator += (RACoordinate<T> &coordinate);
+  RACoordinate& operator -= (RACoordinate<T> &coordinate);
+  RACoordinate& operator *= (double factor);
+  RACoordinate& operator /= (double divisor);
+
+  T& operator [] (int index);
+
+  void resize(int nDimensions);
+  int size();
 };
 
-template<class T, int nDimensions>
-RACoordinate<T, nDimensions>::RACoordinate()
+template<class T>
+RACoordinate<T>::RACoordinate()
 {
-  for (int i = 0; i < nDimensions; ++i)
-  {
-    _elements[i] = 0;
-  }
+  _elements.resize(3);
 }
 
-template<class T, int nDimensions>
-RACoordinate<T, nDimensions>::RACoordinate(const T *elements)
+template<class T>
+RACoordinate<T>::RACoordinate(int nDimensions)
 {
-  for (int i = 0; i < nDimensions; ++i)
-  {
-    _elements[i] = elements[i];
-  }  
+  _elements.resize(nDimensions);
 }
 
-template<class T, int nDimensions>
-RACoordinate<T, nDimensions>::RACoordinate(const RACoordinate<T, nDimensions> &p)
+template<class T>
+RACoordinate<T>::RACoordinate(RAArray<T> &elements)
 {
-  for (int i = 0; i < nDimensions; ++i)
-  {
-    _elements[i] = p._elements[i];
-  }
+  _elements = elements;
 }
 
-template<class T, int nDimensions>
-RACoordinate<T, nDimensions>::~RACoordinate()
+template<class T>
+RACoordinate<T>::RACoordinate(RACoordinate<T> &coordinate)
+{
+  _elements = coordinate._elements;
+}
+
+template<class T>
+RACoordinate<T>::~RACoordinate()
 {
 
 }
 
-template<class T, int nDimensions>
-const RACoordinate<T, nDimensions> RACoordinate<T, nDimensions>::operator + (const RACoordinate<T, nDimensions> &p)
+template<class T>
+RACoordinate<T>& RACoordinate<T>::operator = (RAArray<T> &elements)
 {
-  RACoordinate<T, nDimensions> t;
-  for (int i = 0; i < nDimensions; ++i)
-  {
-    t._elements[i] = _elements[i] + p._elements[i];
-  }
-  return t;
-}
-
-template<class T, int nDimensions>
-const  RACoordinate<T, nDimensions> RACoordinate<T, nDimensions>::operator - (const RACoordinate<T, nDimensions> &p)
-{
-  RACoordinate<T, nDimensions> t;
-  for (int i = 0; i < nDimensions; ++i)
-  {
-    t._elements[i] = _elements[i] - p._elements[i];
-  }
-  return t;
-}
-
-template<class T, int nDimensions>
-const RACoordinate<T, nDimensions>& RACoordinate<T, nDimensions>::operator += (const RACoordinate<T, nDimensions> &p)
-{
-  for (int i = 0; i < nDimensions; ++i)
-  {
-    _elements[i] += p._elements[i];
-  }
-  return *this;
-}
-
-template<class T, int nDimensions>
-const RACoordinate<T, nDimensions>& RACoordinate<T, nDimensions>::operator -= (const RACoordinate<T, nDimensions> &p)
-{
-  for (int i = 0; i < nDimensions; ++i)
-  {
-    _elements[i] -= p._elements[i];
-  }
-  return *this;
-}
-
-template<class T, int nDimensions>
-const RACoordinate<T, nDimensions>& RACoordinate<T, nDimensions>::operator = (const RACoordinate<T, nDimensions> &p)
-{
-  for (int i = 0; i < nDimensions; ++i)
-  {
-    _elements[i] = p._elements[i];
-  }
-  return *this;
-}
-
-template<class T, int nDimensions>
-const RACoordinate<T, nDimensions>& RACoordinate<T, nDimensions>::operator = (const T *elements)
-{
-  for (int i = 0; i < nDimensions; ++i)
-  {
-    _elements[i] = elements[i];
-  }
+  _elements = elements;
   return *this;  
 }
 
-template<class T, int nDimensions>
-const T& RACoordinate<T, nDimensions>::operator [] (int index)
+template<class T>
+RACoordinate<T>& RACoordinate<T>::operator = (RACoordinate<T> &coordinate)
+{
+  _elements = coordinate._elements;
+  return *this;
+}
+
+template<class T>
+RACoordinate<T> RACoordinate<T>::operator + (RACoordinate<T> &coordinate)
+{
+  int nDimensions = size();
+  if (nDimensions != coordinate.size())
+  {
+    throw 0;
+  }
+  RACoordinate<T> t(nDimensions);
+  for (int i = 0; i < nDimensions; ++i)
+  {
+    t._elements[i] = _elements[i] + coordinate._elements[i];
+  }
+  return t;  
+}
+
+template<class T>
+RACoordinate<T> RACoordinate<T>::operator - (RACoordinate<T> &coordinate)
+{
+  int nDimensions = size();
+  if (nDimensions != coordinate.size())
+  {
+    throw 0;
+  }
+  RACoordinate<T> t(nDimensions);
+  for (int i = 0; i < nDimensions; ++i)
+  {
+    t._elements[i] = _elements[i] - coordinate._elements[i];
+  }
+  return t;  
+}
+
+template<class T>
+RACoordinate<T> RACoordinate<T>::operator * (double factor)
+{
+  int nDimensions = size();
+  RACoordinate<T> t(nDimensions);
+  for (int i = 0; i < nDimensions; ++i)
+  {
+    t._elements[i] = _elements[i] * factor;
+  }
+  return t;  
+}
+
+template<class T>
+RACoordinate<T> RACoordinate<T>::operator / (double divisor)
+{
+  int nDimensions = size();
+  RACoordinate<T> t(nDimensions);
+  for (int i = 0; i < nDimensions; ++i)
+  {
+    t._elements[i] = _elements[i] / divisor;
+  }
+  return t;  
+}
+
+template<class T>
+RACoordinate<T>& RACoordinate<T>::operator += (RACoordinate<T> &coordinate)
+{
+  int nDimensions = size();
+  if (nDimensions != coordinate.size())
+  {
+    throw 0;
+  }
+  for (int i = 0; i < nDimensions; ++i)
+  {
+    _elements[i] += coordinate._elements[i];
+  }
+  return *this;
+}
+
+template<class T>
+RACoordinate<T>& RACoordinate<T>::operator -= (RACoordinate<T> &coordinate)
+{
+  int nDimensions = size();
+  if (nDimensions != coordinate.size())
+  {
+    throw 0;
+  }
+  for (int i = 0; i < nDimensions; ++i)
+  {
+    _elements[i] -= coordinate._elements[i];
+  }
+  return *this;
+}
+
+template<class T>
+RACoordinate<T>& RACoordinate<T>::operator *= (double factor)
+{
+  int nDimensions = size();
+  for (int i = 0; i < nDimensions; ++i)
+  {
+    _elements[i] *= factor;
+  }
+  return *this;
+}
+
+template<class T>
+RACoordinate<T>& RACoordinate<T>::operator /= (double divisor)
+{
+  int nDimensions = size();
+  for (int i = 0; i < nDimensions; ++i)
+  {
+    _elements[i] /= divisor;
+  }
+  return *this;
+}
+
+template<class T>
+T& RACoordinate<T>::operator [] (int index)
 {
   return _elements[index];
 }
 
+template<class T>
+void RACoordinate<T>::resize(int nDimensions)
+{
+  _elements.resize(nDimensions);
+}
+
+template<class T>
+int RACoordinate<T>::size()
+{
+  return _elements.size();
+}
+
+#endif // RACOORDINATE_H
